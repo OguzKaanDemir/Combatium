@@ -8,6 +8,6 @@ namespace Scripts.Data
     public class PlayerSettings : ScriptableObject
     {
         public KeyCode 
-            rightKey, leftKey, jumpKey, throwKey, shootKey;
+            rightKey, leftKey, jumpKey, throwKey, shootKey, reloadKey;
     }
 }

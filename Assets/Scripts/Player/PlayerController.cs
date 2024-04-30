@@ -8,6 +8,7 @@ namespace Scripts.Player
         [Header("Settings")]
         [SerializeField] private float m_MovementSpeed;
         [SerializeField] private float m_JumpForce;
+        [SerializeField] private float m_AirMovementSpeedDecreaseMultiplier;
 
         [Space]
         [SerializeField] private LayerMask m_GroundLayer;
@@ -23,6 +24,11 @@ namespace Scripts.Player
         private bool m_CanHandleInput;
         private bool m_CanJump;
         private bool m_IsGrounded;
+        #endregion
+
+        #region Movement Directions
+        private int m_RightDirection = 1;
+        private int m_LeftDirection = -1;
         #endregion
 
         private void Start()
@@ -63,9 +69,9 @@ namespace Scripts.Player
         private void HandleInput()
         {
             if (m_PlayerInput.RightKey)
-                Move(1);
+                Move(m_RightDirection);
             else if (m_PlayerInput.LeftKey)
-                Move(-1);
+                Move(m_LeftDirection);
 
             if (m_PlayerInput.JumpKey)
                 Jump();
@@ -77,7 +83,7 @@ namespace Scripts.Player
         private void Move(float direction)
         {
             if (!m_IsGrounded)
-                direction /= 1.7f;
+                direction /= m_AirMovementSpeedDecreaseMultiplier;
 
             transform.Translate(Vector3.right * direction * m_MovementSpeed * Time.deltaTime);
         }
