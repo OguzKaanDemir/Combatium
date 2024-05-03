@@ -22,12 +22,15 @@ namespace Scripts.Weapons
         public int spareBulletsCount;
         public int currentBulletCount;
 
+        public Vector3 throwForce;
+
         public new Rigidbody2D rigidbody2D;
 
         public BulletBase bulletPrefab;
 
         public ParticleSystem shootParticle;
 
+        [HideInInspector] public PlayerBase player;
         [HideInInspector] public PlayerInput playerInput;
 
         public virtual void Start()
@@ -43,28 +46,17 @@ namespace Scripts.Weapons
                     Shoot();
                 else if (playerInput.ReloadKey)
                     Reload();
+                else if (playerInput.ThrowKey)
+                    Throw();
             }
-        }
-
-        public virtual void OnEnable()
-        {
-
-        }
-
-        public virtual void OnDisable()
-        {
-
         }
 
         public virtual void OnTriggerEnter2D(Collider2D collider)
         {
-            print(collider.name);
             if (IsCollectable && collider.TryGetComponent<PlayerBase>(out var player))
             {
-                print("ss");
                 if (player.CollectWeapon(this))
                 {
-                    print("aa");
                     Collect();
                 }
             }
@@ -124,9 +116,32 @@ namespace Scripts.Weapons
 
         public virtual void Throw()
         {
+            if (!isReloading)
+                StartCoroutine(ThrowCrt());
+        }
+
+        public virtual IEnumerator ThrowCrt()
+        {
             transform.parent = null;
             rigidbody2D.isKinematic = false;
-            // more
+
+            canShoot = false;
+            IsCollectable = false;
+
+            var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var playerPosition = playerInput.gameObject.transform.position;
+            var throwDirection = mousePosition.x > playerPosition.x ? 1 : -1;
+            var throwPosition = new Vector3(throwDirection * throwForce.x, throwForce.y, 0);
+
+            rigidbody2D.AddForce(throwPosition, ForceMode2D.Impulse);
+
+            player.ThrowWeapon();
+            player = null;
+            playerInput = null;
+
+            yield return new WaitForSeconds(1);
+
+            IsCollectable = true;
         }
 
         public virtual void Collect()
@@ -135,8 +150,9 @@ namespace Scripts.Weapons
             canShoot = true;
         }
 
-        public void SetPlayerInputComponent(PlayerInput input)
+        public void SetPlayerComponents(PlayerBase player, PlayerInput input)
         {
+            this.player = player;
             playerInput = input;
         }
 

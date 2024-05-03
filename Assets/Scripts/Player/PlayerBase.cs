@@ -28,7 +28,7 @@ namespace Scripts.Player
 
             weapon.transform.parent = m_WeaponParent;
             weapon.transform.localPosition = Vector3.zero;
-            weapon.SetPlayerInputComponent(m_PlayerInput);
+            weapon.SetPlayerComponents(this, m_PlayerInput);
 
             m_CurrentWeapon = weapon;
 
