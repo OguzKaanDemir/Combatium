@@ -6,16 +6,9 @@ namespace Scripts.Bullets
 {
     public class BulletBase : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
+        public virtual void SpawnBullet()
         {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
+            print("spawned");
         }
     }
 }

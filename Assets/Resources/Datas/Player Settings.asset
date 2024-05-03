@@ -17,3 +17,4 @@ MonoBehaviour:
   jumpKey: 32
   throwKey: 103
   shootKey: 323
+  reloadKey: 114

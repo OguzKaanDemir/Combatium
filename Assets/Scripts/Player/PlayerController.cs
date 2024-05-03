@@ -4,7 +4,6 @@ namespace Scripts.Player
 {
     public class PlayerController : MonoBehaviour
     {
-        #region Settings
         [Header("Settings")]
         [SerializeField] private float m_MovementSpeed;
         [SerializeField] private float m_JumpForce;
@@ -13,28 +12,19 @@ namespace Scripts.Player
         [Space]
         [SerializeField] private LayerMask m_GroundLayer;
         [SerializeField] private float m_RayDistance;
-        #endregion
 
-        #region Components
         private Rigidbody2D m_Rigidbody2D;
         private PlayerInput m_PlayerInput;
-        #endregion
 
-        #region Variables
         private bool m_CanHandleInput;
         private bool m_CanJump;
         private bool m_IsGrounded;
-        #endregion
 
-        #region Movement Directions
         private int m_RightDirection = 1;
         private int m_LeftDirection = -1;
-        #endregion
 
         private void Start()
         {
-            GetComponents();
-
             m_CanHandleInput = true;
         }
 
@@ -51,6 +41,12 @@ namespace Scripts.Player
             m_CanHandleInput = canHandleInput;
         }
 
+        public void SetComponents(Rigidbody2D rb, PlayerInput input)
+        {
+            m_Rigidbody2D = rb;
+            m_PlayerInput = input;
+        }
+
         private void HandleGrounding()
         {
             var hit = Physics2D.Raycast(transform.position, Vector2.down, m_RayDistance, m_GroundLayer);
@@ -61,7 +57,7 @@ namespace Scripts.Player
             }
             else
             {
-                m_CanJump= false;
+                m_CanJump = false;
                 m_IsGrounded = false;
             }
         }
@@ -75,9 +71,6 @@ namespace Scripts.Player
 
             if (m_PlayerInput.JumpKey)
                 Jump();
-
-            if (m_PlayerInput.ThrowKey)
-                Debug.Log("Throw");
         }
 
         private void Move(float direction)
@@ -92,12 +85,6 @@ namespace Scripts.Player
         {
             if (m_CanJump && m_IsGrounded)
                 m_Rigidbody2D.velocity = Vector3.up * m_JumpForce;
-        }
-
-        private void GetComponents()
-        {
-            m_Rigidbody2D = GetComponent<Rigidbody2D>();
-            m_PlayerInput = GetComponent<PlayerInput>();
         }
     }
 }

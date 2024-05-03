@@ -35,6 +35,12 @@ namespace Scripts.Player
             get =>
                 Input.GetKey(m_PlayerSettings.shootKey);
         }
+
+        public bool ReloadKey
+        {
+            get =>
+                Input.GetKey(m_PlayerSettings.reloadKey);
+        }
         #endregion
 
         #region Data
