@@ -6,6 +6,8 @@ using System.Collections;
 
 namespace Scripts.Weapons
 {
+    [RequireComponent(typeof(MouseRotationer))]
+    [RequireComponent(typeof(CapsuleCollider2D), typeof(BoxCollider2D), typeof(Rigidbody2D))]
     public class WeaponBase : MonoBehaviour, ICollectable
     {
         [field: SerializeField] public bool IsCollectable { get; set; }
@@ -14,10 +16,10 @@ namespace Scripts.Weapons
         public bool isReloading;
 
         public float shootRate;
-        public float recoilValue;
+        public Vector2 recoilValue;
         public float hitValue;
 
-        public float reloadRate;
+        public float reloadRate; 
         public int maxBulletCount;
         public int spareBulletsCount;
         public int currentBulletCount;
@@ -27,15 +29,18 @@ namespace Scripts.Weapons
         public new Rigidbody2D rigidbody2D;
 
         public BulletBase bulletPrefab;
+        public Transform bulletSpawnPoint;
 
         public ParticleSystem shootParticle;
 
         [HideInInspector] public PlayerBase player;
         [HideInInspector] public PlayerInput playerInput;
+        [HideInInspector] public MouseRotationer mouseRotationer;
 
         public virtual void Start()
         {
             IsCollectable = true;
+            mouseRotationer = GetComponent<MouseRotationer>();
         }
 
         public virtual void Update()
@@ -73,7 +78,16 @@ namespace Scripts.Weapons
             canShoot = false;
 
             if (bulletPrefab)
-                bulletPrefab.SpawnBullet();
+            {
+                var gunDirection = transform.right;
+                var spawnPosition = bulletSpawnPoint.position;
+                var spawnRotation = Quaternion.LookRotation(Vector3.forward, gunDirection);
+
+                var newBullet = Instantiate(bulletPrefab, spawnPosition, spawnRotation);
+
+                var fireDirection = gunDirection * newBullet.bulletSpeed;
+                newBullet.FireBullet(fireDirection, recoilValue);
+            }
 
             if (shootParticle)
                 shootParticle.Play();
@@ -138,6 +152,8 @@ namespace Scripts.Weapons
             player.ThrowWeapon();
             player = null;
             playerInput = null;
+            mouseRotationer.enabled = false;
+            transform.position = Vector3.zero;
 
             yield return new WaitForSeconds(1);
 
@@ -148,6 +164,7 @@ namespace Scripts.Weapons
         {
             IsCollectable = false;
             canShoot = true;
+            mouseRotationer.enabled = true;
         }
 
         public void SetPlayerComponents(PlayerBase player, PlayerInput input)

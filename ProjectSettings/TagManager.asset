@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - PlayerHead
+  - PlayerBody
   layers:
   - Default
   - TransparentFX
@@ -14,9 +16,9 @@ TagManager:
   - UI
   - Ground
   - Player
-  - 
-  - 
-  - 
+  - PlayerCollider
+  - Bullet
+  - Weapon
   - 
   - 
   - 
