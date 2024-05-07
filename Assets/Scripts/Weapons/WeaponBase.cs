@@ -3,6 +3,7 @@ using Scripts.Player;
 using Scripts.Bullets;
 using Scripts.Interfaces;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Scripts.Weapons
 {
@@ -19,7 +20,7 @@ namespace Scripts.Weapons
         public Vector2 recoilValue;
         public float hitValue;
 
-        public float reloadRate; 
+        public float reloadRate;
         public int maxBulletCount;
         public int spareBulletsCount;
         public int currentBulletCount;
@@ -29,7 +30,9 @@ namespace Scripts.Weapons
         public new Rigidbody2D rigidbody2D;
 
         public BulletBase bulletPrefab;
+        [Range(1, 5)] public int bulletCountOnShoot;
         public Transform bulletSpawnPoint;
+        public List<Transform> bulletSpawnPoints;
 
         public ParticleSystem shootParticle;
 
@@ -79,14 +82,25 @@ namespace Scripts.Weapons
 
             if (bulletPrefab)
             {
-                var gunDirection = transform.right;
-                var spawnPosition = bulletSpawnPoint.position;
-                var spawnRotation = Quaternion.LookRotation(Vector3.forward, gunDirection);
+                if (bulletCountOnShoot == 1)
+                {
+                    var gunDirection = transform.right;
+                    var spawnPosition = bulletSpawnPoint.position;
+                    var spawnRotation = Quaternion.LookRotation(Vector3.forward, gunDirection);
 
-                var newBullet = Instantiate(bulletPrefab, spawnPosition, spawnRotation);
+                    SpawnBullet(gunDirection, spawnPosition, spawnRotation);
+                }
+                else if (bulletCountOnShoot > 1)
+                {
+                    foreach (var spawnPoint in bulletSpawnPoints)
+                    {
+                        var pointDirection = spawnPoint.right;
+                        var spawnPosition = spawnPoint.position;
+                        var spawnRotation = Quaternion.LookRotation(Vector3.forward, pointDirection);
 
-                var fireDirection = gunDirection * newBullet.bulletSpeed;
-                newBullet.FireBullet(fireDirection, recoilValue);
+                        SpawnBullet(pointDirection, spawnPosition, spawnRotation);
+                    }
+                }
             }
 
             if (shootParticle)
@@ -97,6 +111,14 @@ namespace Scripts.Weapons
             yield return new WaitForSeconds(shootRate);
 
             canShoot = true;
+        }
+
+        public virtual void SpawnBullet(Vector3 direction, Vector3 spawnPosition, Quaternion spawnRotation)
+        {
+            var newBullet = Instantiate(bulletPrefab, spawnPosition, spawnRotation);
+
+            var fireDirection = direction * newBullet.bulletSpeed;
+            newBullet.FireBullet(fireDirection, recoilValue);
         }
 
         public virtual void Reload()
