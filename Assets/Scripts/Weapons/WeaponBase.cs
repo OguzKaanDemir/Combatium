@@ -3,6 +3,7 @@ using Scripts.Player;
 using Scripts.Bullets;
 using Scripts.Interfaces;
 using System.Collections;
+using Sirenix.OdinInspector;
 using System.Collections.Generic;
 
 namespace Scripts.Weapons
@@ -31,8 +32,8 @@ namespace Scripts.Weapons
 
         public BulletBase bulletPrefab;
         [Range(1, 5)] public int bulletCountOnShoot;
-        public Transform bulletSpawnPoint;
-        public List<Transform> bulletSpawnPoints;
+        [ShowIf("@bulletCountOnShoot == 1")] public Transform bulletSpawnPoint;
+        [ShowIf("@bulletCountOnShoot > 1")] public List<Transform> bulletSpawnPoints;
 
         public ParticleSystem shootParticle;
 

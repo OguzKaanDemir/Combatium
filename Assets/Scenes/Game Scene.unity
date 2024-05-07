@@ -663,7 +663,11 @@ MonoBehaviour:
   throwForce: {x: 3, y: 3, z: 0}
   rigidbody2D: {fileID: 1058390936}
   bulletPrefab: {fileID: 5828212587469205795, guid: 506bffc2beeb3774c8af88fe5fe226cc, type: 3}
+  bulletCountOnShoot: 1
   bulletSpawnPoint: {fileID: 225126086}
+  bulletSpawnPoints:
+  - {fileID: 0}
+  - {fileID: 0}
   shootParticle: {fileID: 0}
   player: {fileID: 0}
   playerInput: {fileID: 0}
