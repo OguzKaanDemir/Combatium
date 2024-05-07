@@ -99,7 +99,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b787ff8328a599d459fb675c019b6ccd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 10
   bulletSpeed: 12.5
+  lifeTime: 2
   rigidbody2D: {fileID: 5724321388459862740}
 --- !u!61 &3251482386234478379
 BoxCollider2D:
@@ -130,7 +132,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
