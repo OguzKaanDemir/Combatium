@@ -19,7 +19,7 @@ namespace Scripts.Weapons
 
         public float shootRate;
         public Vector2 recoilValue;
-        public float hitValue;
+        //public float hitValue;
 
         public float reloadRate;
         public int maxBulletCount;

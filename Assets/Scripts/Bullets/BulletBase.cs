@@ -20,14 +20,12 @@ namespace Scripts.Bullets
         {
             if (collision.TryGetComponent<PlayerCollider>(out var player))
             {
-                if (!player.isLocalPlayer)
-                {
-                    // damage actions
-                    Destroy(gameObject);
-                }
+                if (player.isLocalPlayer) return;
+                Destroy(gameObject);
             }
             else if (!collision.GetComponent<BulletBase>())
             {
+                print(collision.name);
                 Destroy(gameObject);
             }
         }
