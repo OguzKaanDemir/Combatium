@@ -2,12 +2,23 @@ using TMPro;
 using Fusion;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Scripts.Managers
 {
     [RequireComponent(typeof(NetworkRunner))]
     public class NetworkManager : MonoBehaviour
     {
+        private static NetworkRunner m_Runner;
+        public static NetworkRunner Runner
+        {
+            get
+            {
+                return m_Runner;
+            }
+        }
+
         [SerializeField] private TMP_InputField m_RoomNameField;
         [SerializeField] private TMP_InputField m_RoomPasswordField;
         [SerializeField] private Slider m_MaxPlayerSlider;
@@ -16,7 +27,6 @@ namespace Scripts.Managers
         [SerializeField] private Button m_CreateRoomButton;
         [SerializeField] private Button m_BackButton;
 
-        private NetworkRunner m_Runner;
 
         private string m_RoomName;
         private string m_RoomPassword;
@@ -35,8 +45,10 @@ namespace Scripts.Managers
             m_RoomPasswordField.onValueChanged.AddListener(SetRoomPassword);
             m_IsVisibleRoomToggle.onValueChanged.AddListener(SetIsRoomVisible);
             m_MaxPlayerSlider.onValueChanged.AddListener(SetMaxPlayers);
-            m_CreateRoomButton.onClick.AddListener(CreateRoom);
+            //m_CreateRoomButton.onClick.AddListener(CreateRoom);
         }
+
+        
 
         private void SetRoomName(string name)
         {
@@ -58,14 +70,6 @@ namespace Scripts.Managers
             m_MaxPlayers = (int)maxPlayers;
         }
 
-        private void CreateRoom()
-        {
-            var gameConfig = new StartGameArgs()
-            {
-                GameMode = GameMode.AutoHostOrClient,
 
-            };
-            m_Runner.StartGame(gameConfig);
-        }
     }
 }
