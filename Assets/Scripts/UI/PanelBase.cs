@@ -1,27 +1,39 @@
-using Scripts.Enums;
 using UnityEngine;
+using Scripts.Enums;
 
 namespace Scripts.UI
 {
+    [RequireComponent(typeof(CanvasGroup))]
     public class PanelBase : MonoBehaviour
     {
         public PanelType panelType;
 
         private CanvasGroup m_CanvasGroup;
 
-        private void Start()
+        public virtual void Start()
         {
             m_CanvasGroup = GetComponent<CanvasGroup>();
         }
 
-        public void OpenPanel()
+        public virtual bool OpenPanel()
         {
-            m_CanvasGroup.alpha = 1.0f;
+            return SetCanvasGroup(1.0f, true, true);
         }
 
-        public void ClosePanel()
+        public virtual bool ClosePanel()
         {
-            m_CanvasGroup.alpha = 0.0f;
+            return SetCanvasGroup(0.0f, false, false);
+        }
+
+        private bool SetCanvasGroup(float alpha, bool interactable, bool blocksRaycasts)
+        {
+            if (m_CanvasGroup.alpha == alpha) return false;
+
+            m_CanvasGroup.alpha = alpha;
+            m_CanvasGroup.interactable = interactable;
+            m_CanvasGroup.blocksRaycasts = blocksRaycasts;
+
+            return true;
         }
     }
 }

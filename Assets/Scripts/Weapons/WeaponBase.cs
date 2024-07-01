@@ -176,7 +176,6 @@ namespace Scripts.Weapons
             player = null;
             playerInput = null;
             mouseRotationer.enabled = false;
-            transform.position = Vector3.zero;
 
             yield return new WaitForSeconds(1);
 

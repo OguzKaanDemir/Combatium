@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Scripts.UI
 {
-    public class JoinRoomPanel : MonoBehaviour
+    public class JoinRoomPanel : PanelBase
     {
-        // Start is called before the first frame update
-        void Start()
+        public override void Start()
         {
-        
+            base.Start();
+
         }
 
         // Update is called once per frame

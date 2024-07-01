@@ -1,21 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Scripts.Enums;
+using UnityEngine.UI;
+using Scripts.Helpers;
+using Scripts.Managers;
 
-namespace Scripts
+namespace Scripts.UI
 {
-    public class MainPanel : MonoBehaviour
+    public class MainPanel : PanelBase
     {
-        // Start is called before the first frame update
-        void Start()
+        [SerializeField] private Button m_CreateRoomPanelButton;
+        [SerializeField] private Button m_JoinRoomPanelButton;
+
+        public override void Start()
         {
-        
+            base.Start();
+            SetButtons();
         }
 
-        // Update is called once per frame
-        void Update()
+        private void SetButtons()
         {
-        
+            CreateRoomPanelButton();
+            JoinRoomPanelButton();
+        }
+
+        private void CreateRoomPanelButton()
+        {
+            m_CreateRoomPanelButton.SetButtonOnClick(() => PanelManager.Ins.OpenPanel(PanelType.CreateRoomPanel));
+        }
+
+        private void JoinRoomPanelButton()
+        {
+            m_JoinRoomPanelButton.SetButtonOnClick(() => PanelManager.Ins.OpenPanel(PanelType.JoinRoomPanel));
         }
     }
 }
