@@ -71,6 +71,7 @@ namespace Scripts.Weapons
             }
         }
 
+        #region Shoot
         public virtual void Shoot()
         {
             if (!(!canShoot || currentBulletCount <= 0))
@@ -84,23 +85,12 @@ namespace Scripts.Weapons
             if (bulletPrefab)
             {
                 if (bulletCountOnShoot == 1)
-                {
-                    var gunDirection = transform.right;
-                    var spawnPosition = bulletSpawnPoint.position;
-                    var spawnRotation = Quaternion.LookRotation(Vector3.forward, gunDirection);
+                    ShootActions(transform, bulletSpawnPoint);
 
-                    SpawnBullet(gunDirection, spawnPosition, spawnRotation);
-                }
                 else if (bulletCountOnShoot > 1)
                 {
                     foreach (var spawnPoint in bulletSpawnPoints)
-                    {
-                        var pointDirection = spawnPoint.right;
-                        var spawnPosition = spawnPoint.position;
-                        var spawnRotation = Quaternion.LookRotation(Vector3.forward, pointDirection);
-
-                        SpawnBullet(pointDirection, spawnPosition, spawnRotation);
-                    }
+                        ShootActions(spawnPoint, spawnPoint);
                 }
             }
 
@@ -114,14 +104,38 @@ namespace Scripts.Weapons
             canShoot = true;
         }
 
-        public virtual void SpawnBullet(Vector3 direction, Vector3 spawnPosition, Quaternion spawnRotation)
+        public virtual void ShootActions(Transform directionTranfsorm, Transform spawnPointTransform)
         {
-            var newBullet = Instantiate(bulletPrefab, spawnPosition, spawnRotation);
+            var properties = SetBulletProperties(directionTranfsorm, spawnPointTransform);
 
-            var fireDirection = direction * newBullet.bulletSpeed;
-            newBullet.FireBullet(fireDirection, recoilValue);
+            var bullet = SpawnBullet(properties.spawnPosition, properties.spawnRotation);
+
+            FireBullet(bullet, properties.direction);
         }
 
+        public virtual (Vector3 direction, Vector3 spawnPosition, Quaternion spawnRotation) SetBulletProperties(Transform directionTranfsorm, Transform spawnPointTransform)
+        {
+            var pointDirection = directionTranfsorm.right;
+            var spawnPosition = spawnPointTransform.position;
+            var spawnRotation = Quaternion.LookRotation(Vector3.forward, pointDirection);
+
+            return (pointDirection, spawnPosition, spawnRotation);
+        }
+
+        public virtual BulletBase SpawnBullet(Vector3 spawnPosition, Quaternion spawnRotation)
+        {
+            return Instantiate(bulletPrefab, spawnPosition, spawnRotation);
+        }
+
+        public virtual void FireBullet(BulletBase bullet, Vector3 direction)
+        {
+            var fireDirection = direction * bullet.bulletSpeed;
+            bullet.FireBullet(fireDirection, recoilValue);
+        }
+
+        #endregion
+
+        #region Reload
         public virtual void Reload()
         {
             if (!isReloading && currentBulletCount != maxBulletCount && spareBulletsCount > 0)
@@ -150,7 +164,9 @@ namespace Scripts.Weapons
             canShoot = true;
             isReloading = false;
         }
+        #endregion
 
+        #region Throw
         public virtual void Throw()
         {
             if (!isReloading)
@@ -165,12 +181,7 @@ namespace Scripts.Weapons
             canShoot = false;
             IsCollectable = false;
 
-            var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            var playerPosition = playerInput.gameObject.transform.position;
-            var throwDirection = mousePosition.x > playerPosition.x ? 1 : -1;
-            var throwPosition = new Vector3(throwDirection * throwForce.x, throwForce.y, 0);
-
-            rigidbody2D.AddForce(throwPosition, ForceMode2D.Impulse);
+            rigidbody2D.AddForce(CalculateThrowPosition(), ForceMode2D.Impulse);
 
             player.ThrowWeapon();
             player = null;
@@ -181,6 +192,15 @@ namespace Scripts.Weapons
 
             IsCollectable = true;
         }
+
+        public Vector3 CalculateThrowPosition()
+        {
+            var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var playerPosition = playerInput.gameObject.transform.position;
+            var throwDirection = mousePosition.x > playerPosition.x ? 1 : -1;
+            return new Vector3(throwDirection * throwForce.x, throwForce.y, 0);
+        }
+        #endregion
 
         public virtual void Collect()
         {
