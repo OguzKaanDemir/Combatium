@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Scripts.Managers;
 using System.Collections.Generic;
+using Scripts.Helpers;
 
 namespace Scripts.UI
 {
@@ -60,11 +61,11 @@ namespace Scripts.UI
 
         private void SetElements()
         {
-            m_RoomNameField.onValueChanged.AddListener(SetRoomName);
-            m_RoomPasswordField.onValueChanged.AddListener(SetRoomPassword);
-            m_IsVisibleRoomToggle.onValueChanged.AddListener(SetIsRoomVisible);
-            m_MaxPlayerSlider.onValueChanged.AddListener(SetMaxPlayers);
-            m_CreateRoomButton.onClick.AddListener(() => CreateRoom(m_RoomName, m_RoomPassword, m_MaxPlayers, m_IsVisibleRoom));
+            m_RoomNameField.AddTMPInputFieldOnValueChanged(SetRoomName);
+            m_RoomPasswordField.AddTMPInputFieldOnValueChanged(SetRoomPassword);
+            m_IsVisibleRoomToggle.AddToggleOnValueChanged(SetIsRoomVisible);
+            m_MaxPlayerSlider.AddSliderOnValueChanged(SetMaxPlayers);
+            m_CreateRoomButton.AddButtonOnClick(() => CreateRoom(m_RoomName, m_RoomPassword, m_MaxPlayers, m_IsVisibleRoom));
         }
 
         private void SetRoomName(string name)

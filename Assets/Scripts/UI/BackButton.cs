@@ -1,8 +1,8 @@
-using Scripts.Helpers;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
+using Scripts.Helpers;
+using UnityEngine.Events;
+using System.Collections.Generic;
 
 namespace Scripts.UI
 {

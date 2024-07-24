@@ -1,5 +1,6 @@
 using UnityEngine;
 using Scripts.Enums;
+using DG.Tweening;
 
 namespace Scripts.UI
 {
@@ -9,10 +10,12 @@ namespace Scripts.UI
         public PanelType panelType;
 
         private CanvasGroup m_CanvasGroup;
+        private float m_AnimationSpeed = 0.075f;
+
 
         public virtual void Start()
         {
-            m_CanvasGroup = GetComponent<CanvasGroup>();
+
         }
 
         public virtual bool OpenPanel()
@@ -25,11 +28,12 @@ namespace Scripts.UI
             return SetCanvasGroup(0.0f, false, false);
         }
 
-        private bool SetCanvasGroup(float alpha, bool interactable, bool blocksRaycasts)
+        public virtual bool SetCanvasGroup(float alpha, bool interactable, bool blocksRaycasts)
         {
+            if (!m_CanvasGroup) m_CanvasGroup = GetComponent<CanvasGroup>();
             if (m_CanvasGroup.alpha == alpha) return false;
 
-            m_CanvasGroup.alpha = alpha;
+            m_CanvasGroup.DOFade(alpha, m_AnimationSpeed);
             m_CanvasGroup.interactable = interactable;
             m_CanvasGroup.blocksRaycasts = blocksRaycasts;
 

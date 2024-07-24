@@ -22,9 +22,15 @@ namespace Scripts.Managers
         [SerializeField] private List<PanelBase> m_Panels;
 
         private PanelType m_PrevPanel = PanelType.None;
-        private PanelType m_CurrentPanel = PanelType.MainPanel;
+        private PanelType m_CurrentPanel = PanelType.None;
 
-        public void OpenPanel(PanelType panelType)
+        private void Start()
+        {
+            CloseAllPanels();
+            OpenPanel(PanelType.MainPanel, true);
+        }
+
+        public void OpenPanel(PanelType panelType, bool isStart = false)
         {
             m_Panels.ForEach(panel =>
             {
@@ -34,6 +40,8 @@ namespace Scripts.Managers
 
             m_PrevPanel = m_CurrentPanel;
             m_CurrentPanel = panelType;
+
+            if (isStart) return;
 
             if (m_PrevPanel != PanelType.None)
                 ClosePanel(m_PrevPanel);
@@ -54,6 +62,14 @@ namespace Scripts.Managers
                     panel.ClosePanel();
                     return;
                 }
+            });
+        }
+
+        public void CloseAllPanels()
+        {
+            m_Panels.ForEach(panel =>
+            {
+                panel.ClosePanel();
             });
         }
     }
