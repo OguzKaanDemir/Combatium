@@ -34,8 +34,7 @@ namespace Scripts.UI
             events?.Invoke();
             m_BackButtonEvents.Remove(events);
 
-            if (m_BackButtonEvents.Count > 0)
-                m_BackButton.gameObject.SetActive(false);
+            CheckButtonShouldBeVisible();
         }
 
         public void AddButtonEvents(UnityAction buttonEvents)
@@ -43,6 +42,18 @@ namespace Scripts.UI
             m_BackButtonEvents.Add(buttonEvents);
 
             m_BackButton.gameObject.SetActive(true);
+        }
+
+        public void ClearButtonEvents()
+        {
+            m_BackButtonEvents.Clear();
+            CheckButtonShouldBeVisible();
+        }
+
+        private void CheckButtonShouldBeVisible()
+        {
+            if (m_BackButtonEvents.Count > 0)
+                m_BackButton.gameObject.SetActive(false);
         }
     }
 }

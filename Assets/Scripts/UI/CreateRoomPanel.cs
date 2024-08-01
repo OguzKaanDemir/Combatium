@@ -1,10 +1,10 @@
 ﻿using TMPro;
-using Fusion;
 using UnityEngine;
 using UnityEngine.UI;
-using Scripts.Managers;
-using System.Collections.Generic;
 using Scripts.Helpers;
+using Photon.Realtime;
+using Scripts.Managers;
+using ExitGames.Client.Photon;
 
 namespace Scripts.UI
 {
@@ -27,36 +27,32 @@ namespace Scripts.UI
 
         public override void Start()
         {
-            base.Start();
             SetElements();
         }
 
-        public bool CreateRoom(string roomName, string roomPassword, int maxPlayers, bool isVisible)
+        public void CreateRoom(string roomName, string roomPassword, int maxPlayers, bool isVisible)
         {
-            if (string.IsNullOrEmpty(roomName)) return false;
+            if (string.IsNullOrEmpty(roomName)) return;
             if (maxPlayers <= 0) maxPlayers = m_DefaultMaxPlayers;
 
-            var sessionProperties = new Dictionary<string, SessionProperty>();
+            var customProperties = new Hashtable();
             if (!string.IsNullOrEmpty(roomPassword))
-            {
-                sessionProperties.Add("Password", roomPassword);
-            }
+                customProperties.Add("Password", roomPassword);
 
-            var gameConfig = new StartGameArgs()
+            var roomOptions = new RoomOptions()
             {
-                GameMode = GameMode.AutoHostOrClient,
-                SessionName = roomName,
-                SessionProperties = sessionProperties,
-                PlayerCount = maxPlayers,
-                IsVisible = isVisible
+                IsVisible = isVisible,
+                CustomRoomProperties = customProperties,
+                MaxPlayers = maxPlayers
             };
 
-            var result = NetworkManager.Runner.StartGame(gameConfig).Result;
+            NetworkManager.Ins.CreateRoom(roomName, roomOptions);
+            m_CreateRoomButton.interactable = false;
+        }
 
-            if (result.ShutdownReason is not ShutdownReason.Ok)
-                return false;
-
-            return true;
+        public void ResetCreateRoomButton()
+        {
+            m_CreateRoomButton.interactable = true;
         }
 
         private void SetElements()

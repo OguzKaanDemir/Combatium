@@ -27,7 +27,7 @@ namespace Scripts.Managers
         private void Start()
         {
             CloseAllPanels();
-            OpenPanel(PanelType.MainPanel, true);
+            OpenPanel(PanelType.LoadingPanel, true);
         }
 
         public void OpenPanel(PanelType panelType, bool isStart = false)
@@ -41,10 +41,10 @@ namespace Scripts.Managers
             m_PrevPanel = m_CurrentPanel;
             m_CurrentPanel = panelType;
 
-            if (isStart) return;
-
             if (m_PrevPanel != PanelType.None)
                 ClosePanel(m_PrevPanel);
+
+            if (isStart || m_CurrentPanel == PanelType.LoadingPanel || m_PrevPanel == PanelType.LoadingPanel) return;
 
             BackButton.Ins.AddButtonEvents(() =>
             {
@@ -71,6 +71,8 @@ namespace Scripts.Managers
             {
                 panel.ClosePanel();
             });
+
+            BackButton.Ins.ClearButtonEvents();
         }
     }
 }

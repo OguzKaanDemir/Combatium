@@ -13,7 +13,6 @@ namespace Scripts.UI
 
         public override void Start()
         {
-            base.Start();
             SetButtons();
         }
 
