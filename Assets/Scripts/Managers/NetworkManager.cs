@@ -46,6 +46,7 @@ namespace Scripts.Managers
         public override void OnJoinedRoom()
         {
             Debug.Log("Joined Room");
+            PanelManager.Ins.CloseAllPanels();
         }
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -56,7 +57,6 @@ namespace Scripts.Managers
         public override void OnCreatedRoom()
         {
             base.OnCreatedRoom();
-            PanelManager.Ins.CloseAllPanels();
         }
 
         public override void OnCreateRoomFailed(short returnCode, string message)

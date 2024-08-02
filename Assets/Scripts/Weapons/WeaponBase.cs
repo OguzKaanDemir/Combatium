@@ -5,6 +5,7 @@ using Scripts.Interfaces;
 using System.Collections;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
+using Scripts.Enums;
 
 namespace Scripts.Weapons
 {
@@ -13,6 +14,8 @@ namespace Scripts.Weapons
     public class WeaponBase : MonoBehaviour, ICollectable
     {
         [field: SerializeField] public bool IsCollectable { get; set; }
+
+        public WeaponType weaponType;
 
         public bool canShoot;
         public bool isReloading;

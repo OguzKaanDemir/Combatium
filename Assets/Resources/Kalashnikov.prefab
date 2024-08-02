@@ -51,18 +51,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <IsCollectable>k__BackingField: 0
+  weaponType: 1
   canShoot: 0
   isReloading: 0
   shootRate: 0.125
   recoilValue: {x: 0, y: 0}
-  hitValue: 2
   reloadRate: 1.75
   maxBulletCount: 20
   spareBulletsCount: 70
   currentBulletCount: 20
   throwForce: {x: 3, y: 3, z: 0}
   rigidbody2D: {fileID: 529768118768447567}
-  bulletPrefab: {fileID: 5828212587469205795, guid: 506bffc2beeb3774c8af88fe5fe226cc, type: 3}
+  bulletPrefab: {fileID: 4814205357941912771, guid: 506bffc2beeb3774c8af88fe5fe226cc, type: 3}
   bulletCountOnShoot: 1
   bulletSpawnPoint: {fileID: 6436791970785637080}
   bulletSpawnPoints:

@@ -41,18 +41,21 @@ namespace Scripts.UI
         {
             m_BackButtonEvents.Add(buttonEvents);
 
-            m_BackButton.gameObject.SetActive(true);
+            CheckButtonShouldBeVisible();
         }
 
         public void ClearButtonEvents()
         {
             m_BackButtonEvents.Clear();
+
             CheckButtonShouldBeVisible();
         }
 
         private void CheckButtonShouldBeVisible()
         {
             if (m_BackButtonEvents.Count > 0)
+                m_BackButton.gameObject.SetActive(true);
+            else
                 m_BackButton.gameObject.SetActive(false);
         }
     }

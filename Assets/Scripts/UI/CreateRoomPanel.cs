@@ -18,7 +18,6 @@ namespace Scripts.UI
         [SerializeField] private TMP_Text m_MaxPlayerText;
         [SerializeField] private Toggle m_IsVisibleRoomToggle;
         [SerializeField] private Button m_CreateRoomButton;
-        [SerializeField] private Button m_BackButton;
 
         private string m_RoomName;
         private string m_RoomPassword;
@@ -82,6 +81,7 @@ namespace Scripts.UI
         private void SetMaxPlayers(float maxPlayers)
         {
             m_MaxPlayers = (int)maxPlayers;
+            m_MaxPlayerText.text = $"({maxPlayers})";
         }
     }
 }
