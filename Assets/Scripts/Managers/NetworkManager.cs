@@ -31,38 +31,42 @@ namespace Scripts.Managers
 
         public override void OnConnectedToMaster()
         {
-            Debug.Log("Connected To Master...");
+            Debug.LogError("Connected To Master...");
 
-            PhotonNetwork.JoinLobby();
+            PhotonNetwork.JoinLobby(TypedLobby.Default);
         }
 
         public override void OnJoinedLobby()
         {
-            Debug.Log("Joined Lobby");
+            Debug.LogError("Joined Lobby");
 
             PanelManager.Ins.OpenPanel(Enums.PanelType.MainPanel);
         }
 
         public override void OnJoinedRoom()
         {
-            Debug.Log("Joined Room");
+            Debug.LogError("Joined Room");
             PanelManager.Ins.CloseAllPanels();
         }
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
+            Debug.LogError("Rooms Updated");
+
             m_RoomList = roomList;
         }
 
         public override void OnCreateRoomFailed(short returnCode, string message)
         {
             base.OnCreateRoomFailed(returnCode, message);
+            Debug.LogError(message);
+
             m_CreateRoomPanel.ResetCreateRoomButton();
         }
 
         public void CreateRoom(string roomName, RoomOptions roomOptions)
         {
-            PhotonNetwork.CreateRoom(roomName, roomOptions);
+            PhotonNetwork.CreateRoom(roomName, roomOptions, TypedLobby.Default);
         }
 
         public bool JoinRoom(string roomName, string roomPassword)
@@ -71,13 +75,33 @@ namespace Scripts.Managers
 
             if (room != null)
             {
-                if (room.CustomProperties.ContainsKey("Password") && (string)room.CustomProperties["Password"] == roomPassword)
+                if (room.PlayerCount >= room.MaxPlayers)
+                {
+                    Debug.LogError("Max player count reached");
+                    return false;
+                }
+                else if (room.CustomProperties.ContainsKey("Password"))
+                {
+                    if ((string)room.CustomProperties["Password"] == roomPassword)
+                    {
+                        PhotonNetwork.JoinRoom(roomName);
+                        Debug.LogError("Success");
+                        return true;
+                    }
+                    else
+                    {
+                        Debug.LogError("Wrong Password");
+                        return false;
+                    }
+                }
+                else
                 {
                     PhotonNetwork.JoinRoom(roomName);
+                    Debug.LogError("Success");
                     return true;
                 }
-                return false;
             }
+            Debug.LogError("Room cant found");
             return false;
         }
 

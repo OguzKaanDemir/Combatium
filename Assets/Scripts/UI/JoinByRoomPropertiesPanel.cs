@@ -37,7 +37,7 @@ namespace Scripts.UI
         {
             if (string.IsNullOrEmpty(m_RoomName)) return;
 
-            m_JoinButton.enabled = false;
+            m_JoinButton.interactable = false;
 
             if (!NetworkManager.Ins.JoinRoom(m_RoomName, m_RoomPassword))
             {

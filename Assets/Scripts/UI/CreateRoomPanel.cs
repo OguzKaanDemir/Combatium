@@ -34,16 +34,24 @@ namespace Scripts.UI
             if (string.IsNullOrEmpty(roomName)) return;
             if (maxPlayers <= 0) maxPlayers = m_DefaultMaxPlayers;
 
-            var customProperties = new Hashtable();
-            if (!string.IsNullOrEmpty(roomPassword))
-                customProperties.Add("Password", roomPassword);
-
             var roomOptions = new RoomOptions()
             {
-                IsVisible = isVisible,
-                CustomRoomProperties = customProperties,
+                IsVisible = true,
+                IsOpen = true,
                 MaxPlayers = maxPlayers
             };
+
+            var customProperties = new Hashtable
+            {
+                { "IsVisible", isVisible }
+            };
+
+            if (!string.IsNullOrEmpty(roomPassword))
+            {
+                customProperties.Add("Password", roomPassword);
+                roomOptions.CustomRoomProperties = customProperties;
+                roomOptions.CustomRoomPropertiesForLobby = new string[2] { "IsVisible", "Password" };
+            }
 
             NetworkManager.Ins.CreateRoom(roomName, roomOptions);
             m_CreateRoomButton.interactable = false;
