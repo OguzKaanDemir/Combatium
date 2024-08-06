@@ -30,7 +30,7 @@ namespace Scripts.Player
 
         private void Update()
         {
-            if (!m_CanHandleInput) return;
+            if (!m_CanHandleInput || !m_PlayerInput) return;
 
             HandleInput();
             HandleGrounding();
@@ -66,6 +66,7 @@ namespace Scripts.Player
         {
             if (m_PlayerInput.RightKey)
                 Move(m_RightDirection);
+
             else if (m_PlayerInput.LeftKey)
                 Move(m_LeftDirection);
 

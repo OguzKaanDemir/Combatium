@@ -1,8 +1,10 @@
 using Photon.Pun;
-using Photon.Realtime;
 using Scripts.UI;
-using System.Collections.Generic;
 using UnityEngine;
+using Scripts.Player;
+using Photon.Realtime;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Scripts.Managers
 {
@@ -19,10 +21,12 @@ namespace Scripts.Managers
             }
         }
 
+        [SerializeField] private GameObject m_PlayerPrefab;
         [SerializeField] private CreateRoomPanel m_CreateRoomPanel;
 
         private List<RoomInfo> m_RoomList = new();
 
+        private Map.Map m_Map;
 
         private void Awake()
         {
@@ -47,6 +51,10 @@ namespace Scripts.Managers
         {
             Debug.LogError("Joined Room");
             PanelManager.Ins.CloseAllPanels();
+
+            m_Map = FindObjectOfType<Map.Map>();
+
+            SpawnPlayer();
         }
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -108,6 +116,18 @@ namespace Scripts.Managers
         public List<RoomInfo> GetRoomList()
         {
             return m_RoomList;
+        }
+
+        private void SpawnPlayer()
+        {
+            StartCoroutine(SpawnPlayerCrt());
+        }
+
+        private IEnumerator SpawnPlayerCrt()
+        {
+            yield return new WaitForSeconds(.5f);
+            var player = PhotonNetwork.Instantiate(m_PlayerPrefab.name, m_Map.GetPlayerSpawnPosition().position, Quaternion.identity);
+            player.GetComponent<PlayerSetter>().enabled = true;
         }
     }
 }

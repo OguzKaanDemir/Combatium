@@ -1,9 +1,8 @@
 using Scripts.UI;
+using System.Linq;
 using UnityEngine;
 using Scripts.Enums;
-using UnityEngine.Events;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Scripts.Managers
 {

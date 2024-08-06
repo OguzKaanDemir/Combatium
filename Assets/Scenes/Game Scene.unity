@@ -150,7 +150,7 @@ Transform:
   m_GameObject: {fileID: 25584282}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.67, y: 0.1, z: 0}
+  m_LocalPosition: {x: 6.67, y: -0.38000003, z: 0}
   m_LocalScale: {x: 2.705081, y: 0.46083, z: 0.46083}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1552,6 +1552,7 @@ GameObject:
   m_Component:
   - component: {fileID: 505920130}
   - component: {fileID: 505920131}
+  - component: {fileID: 505920132}
   m_Layer: 0
   m_Name: Player Spawn Positions
   m_TagString: Untagged
@@ -1603,6 +1604,28 @@ MonoBehaviour:
   - {fileID: 450047849}
   - {fileID: 153967393}
   - {fileID: 865751887}
+--- !u!114 &505920132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505920129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2021,7 +2044,7 @@ Transform:
   m_GameObject: {fileID: 640004233}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.6317, y: -1.25, z: 0}
+  m_LocalPosition: {x: -4.6317, y: -1.73, z: 0}
   m_LocalScale: {x: 2.705081, y: 0.46083, z: 0.46083}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4074,7 +4097,7 @@ Transform:
   m_GameObject: {fileID: 1057375917}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.36, y: 0.32, z: 0}
+  m_LocalPosition: {x: -1.36, y: -0.16000003, z: 0}
   m_LocalScale: {x: 2.705081, y: 0.46083, z: 0.46083}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5517,6 +5540,7 @@ GameObject:
   - component: {fileID: 1593558873}
   - component: {fileID: 1593558875}
   - component: {fileID: 1593558874}
+  - component: {fileID: 1593558876}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -5551,6 +5575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66d9dd8386174644498a393847e9e75d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_PlayerPrefab: {fileID: 1545354033939437939, guid: 76519a2540b435847a46d8142ba40ad4, type: 3}
   m_CreateRoomPanel: {fileID: 674501477}
 --- !u!114 &1593558875
 MonoBehaviour:
@@ -5570,6 +5595,28 @@ MonoBehaviour:
   - {fileID: 1965559751}
   - {fileID: 674501477}
   - {fileID: 1358426136}
+--- !u!114 &1593558876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593558870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 3
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1596010446
 GameObject:
   m_ObjectHideFlags: 0
@@ -5865,7 +5912,7 @@ Transform:
   m_GameObject: {fileID: 1617435091}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.12, y: 1.76, z: 0}
+  m_LocalPosition: {x: 2.12, y: 1.28, z: 0}
   m_LocalScale: {x: 2.705081, y: 0.46083, z: 0.46083}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7444,6 +7491,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2010443668}
   - component: {fileID: 2010443669}
+  - component: {fileID: 2010443670}
   m_Layer: 0
   m_Name: Weapon Spawn Positions
   m_TagString: Untagged
@@ -7495,6 +7543,28 @@ MonoBehaviour:
   - {fileID: 2034621877}
   - {fileID: 203681718}
   - {fileID: 230530889}
+--- !u!114 &2010443670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2010443667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2032355606
 GameObject:
   m_ObjectHideFlags: 0
@@ -7721,6 +7791,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2100044254}
+  - component: {fileID: 2100044255}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -7746,6 +7817,20 @@ Transform:
   - {fileID: 2010443668}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2100044255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100044253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7b9ef0e4da313748ab5738f73e1600d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PlayerSpawnPositions: {fileID: 505920131}
+  m_WeaponSpawnPositions: {fileID: 2010443669}
 --- !u!1 &2119313903
 GameObject:
   m_ObjectHideFlags: 0

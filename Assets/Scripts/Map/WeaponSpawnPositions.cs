@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace Scripts.Map
 {
+    [RequireComponent(typeof(PhotonView))]
     public class WeaponSpawnPositions : MonoBehaviourPun
     {
         [SerializeField] private List<Transform> m_SpawnPositions;

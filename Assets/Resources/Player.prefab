@@ -13,6 +13,9 @@ GameObject:
   - component: {fileID: 7899485925530476472}
   - component: {fileID: 917541602265216004}
   - component: {fileID: 4360670218143625858}
+  - component: {fileID: 4703432444703623542}
+  - component: {fileID: 5669276238788814943}
+  - component: {fileID: 6101751894275580958}
   - component: {fileID: 8494861275014548734}
   - component: {fileID: 8420720009250575168}
   m_Layer: 7
@@ -66,12 +69,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_MovementSpeed: 2.5
-  m_JumpForce: 5
+  m_JumpForce: 6
   m_AirMovementSpeedDecreaseMultiplier: 1.25
   m_GroundLayer:
     serializedVersion: 2
     m_Bits: 64
-  m_RayDistance: 0.0155
+  m_RayDistance: 0.017
 --- !u!114 &917541602265216004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,6 +105,62 @@ MonoBehaviour:
   - {fileID: 917541602265216004}
   - {fileID: 2721871586815449123}
   - {fileID: 2395342131672619468}
+--- !u!114 &4703432444703623542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545354033939437939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 5669276238788814943}
+  - {fileID: 6101751894275580958}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &5669276238788814943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545354033939437939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
+--- !u!114 &6101751894275580958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545354033939437939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!50 &8494861275014548734
 Rigidbody2D:
   serializedVersion: 4
@@ -127,7 +186,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &8420720009250575168
 CapsuleCollider2D:
@@ -415,7 +474,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5889500003272473450}
   - component: {fileID: 2721871586815449123}
-  - component: {fileID: 919524809469872360}
+  - component: {fileID: 7587857271357489589}
   m_Layer: 8
   m_Name: Head Collider
   m_TagString: PlayerHead
@@ -453,8 +512,8 @@ MonoBehaviour:
   isLocalPlayer: 0
   bodyPart: 1
   player: {fileID: 5335283366392730887}
---- !u!61 &919524809469872360
-BoxCollider2D:
+--- !u!58 &7587857271357489589
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -468,7 +527,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -485,16 +544,6 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.875}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 0, y: 0.7573125}
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.25}
-  m_EdgeRadius: 0
+  m_Radius: 0.23920768
