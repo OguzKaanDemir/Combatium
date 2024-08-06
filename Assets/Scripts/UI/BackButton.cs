@@ -41,6 +41,7 @@ namespace Scripts.UI
         {
             m_BackButtonEvents.Add(buttonEvents);
 
+            print(m_BackButtonEvents.Count);
             CheckButtonShouldBeVisible();
         }
 

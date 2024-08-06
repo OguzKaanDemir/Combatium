@@ -13,7 +13,7 @@ namespace Scripts.Managers
         {
             get
             {
-                if(!m_Ins)
+                if (!m_Ins)
                     m_Ins = FindObjectOfType<NetworkManager>();
                 return m_Ins;
             }
@@ -54,11 +54,6 @@ namespace Scripts.Managers
             m_RoomList = roomList;
         }
 
-        public override void OnCreatedRoom()
-        {
-            base.OnCreatedRoom();
-        }
-
         public override void OnCreateRoomFailed(short returnCode, string message)
         {
             base.OnCreateRoomFailed(returnCode, message);
@@ -68,6 +63,22 @@ namespace Scripts.Managers
         public void CreateRoom(string roomName, RoomOptions roomOptions)
         {
             PhotonNetwork.CreateRoom(roomName, roomOptions);
+        }
+
+        public bool JoinRoom(string roomName, string roomPassword)
+        {
+            var room = m_RoomList.Find(room => room.Name == roomName);
+
+            if (room != null)
+            {
+                if (room.CustomProperties.ContainsKey("Password") && (string)room.CustomProperties["Password"] == roomPassword)
+                {
+                    PhotonNetwork.JoinRoom(roomName);
+                    return true;
+                }
+                return false;
+            }
+            return false;
         }
 
         public List<RoomInfo> GetRoomList()

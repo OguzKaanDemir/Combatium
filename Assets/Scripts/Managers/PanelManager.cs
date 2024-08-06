@@ -3,6 +3,7 @@ using UnityEngine;
 using Scripts.Enums;
 using UnityEngine.Events;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Scripts.Managers
 {
@@ -30,26 +31,24 @@ namespace Scripts.Managers
             OpenPanel(PanelType.LoadingPanel, true);
         }
 
-        public void OpenPanel(PanelType panelType, bool isStart = false)
+        public void OpenPanel(PanelType panelType, bool isIgnore = false)
         {
-            m_Panels.ForEach(panel =>
-            {
-                if (panel.panelType == panelType)
-                    panel.OpenPanel();
-            });
+            var panel = m_Panels.First(p => p.panelType == panelType);
 
-            m_PrevPanel = m_CurrentPanel;
+            panel.OpenPanel();
+
+            m_PrevPanel = panel.parentPanelType;
             m_CurrentPanel = panelType;
 
             if (m_PrevPanel != PanelType.None)
                 ClosePanel(m_PrevPanel);
 
-            if (isStart || m_CurrentPanel == PanelType.LoadingPanel || m_PrevPanel == PanelType.LoadingPanel) return;
+            if (isIgnore || m_CurrentPanel == PanelType.LoadingPanel || m_PrevPanel == PanelType.LoadingPanel) return;
 
             BackButton.Ins.AddButtonEvents(() =>
             {
                 ClosePanel(panelType);
-                OpenPanel(m_PrevPanel);
+                OpenPanel(m_PrevPanel, true);
             });
         }
 

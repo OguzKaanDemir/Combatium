@@ -1,21 +1,44 @@
-using System.Collections;
+using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scripts
+namespace Scripts.Map
 {
-    public class PlayerSpawnPositions : MonoBehaviour
+    public class PlayerSpawnPositions : MonoBehaviourPun
     {
-        // Start is called before the first frame update
-        void Start()
+        [SerializeField] private List<Transform> m_SpawnPositions;
+
+        private List<int> m_GottenPositions;
+        private int m_LastIndex;
+
+        public Transform GetPosition()
         {
-        
+            return m_SpawnPositions[GetAvailableIndex()];
         }
 
-        // Update is called once per frame
-        void Update()
+        [PunRPC]
+        private void SetGottenPositions(int index)
         {
-        
+            m_GottenPositions.Add(index);
+            m_LastIndex = index;
+
+            if (m_SpawnPositions.Count == m_GottenPositions.Count)
+                m_GottenPositions.Clear();
+
+        }
+
+        private int GetAvailableIndex()
+        {
+            int rnd;
+
+            do
+            {
+                rnd = Random.Range(0, m_SpawnPositions.Count);
+            } while (rnd == m_LastIndex || m_GottenPositions.Contains(rnd));
+
+            photonView.RPC(nameof(SetGottenPositions), RpcTarget.AllBuffered, rnd);
+
+            return rnd;
         }
     }
 }

@@ -8,6 +8,7 @@ namespace Scripts.UI
     public class PanelBase : MonoBehaviour
     {
         public PanelType panelType;
+        public PanelType parentPanelType;
 
         private CanvasGroup m_CanvasGroup;
         private float m_AnimationSpeed = 0.075f;

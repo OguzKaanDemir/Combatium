@@ -7,6 +7,8 @@ namespace Scripts.Enums
         MainPanel = 1,
         JoinRoomPanel = 2,
         CreateRoomPanel = 3,
-        SettingsPanel = 4
+        JoinByRoomPropertiesPanel = 4,
+        JoinByRoomListPanel = 5,
+        SettingsPanel = 6
     }
 }
