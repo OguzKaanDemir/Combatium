@@ -18,7 +18,7 @@ namespace Scripts.UI
         private void SetElements()
         {
             m_JoinWithRoomPropertiesPanelButton.SetButtonOnClick(() => PanelManager.Ins.OpenPanel(Enums.PanelType.JoinByRoomPropertiesPanel));
-            //m_JoinWithRoomListPanelButton.SetButtonOnClick(() => PanelManager.Ins.OpenPanel(Enums.PanelType.JoinByRoomlistPanel));
+            m_JoinWithRoomListPanelButton.SetButtonOnClick(() => PanelManager.Ins.OpenPanel(Enums.PanelType.JoinByRoomListPanel));
         }
     }
 }

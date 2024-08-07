@@ -5,6 +5,7 @@ using Scripts.Player;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using Scripts.Helpers;
 
 namespace Scripts.Managers
 {
@@ -23,6 +24,7 @@ namespace Scripts.Managers
 
         [SerializeField] private GameObject m_PlayerPrefab;
         [SerializeField] private CreateRoomPanel m_CreateRoomPanel;
+        [SerializeField] private JoinByRoomListPanel m_JoinByRoomListPanel;
 
         private List<RoomInfo> m_RoomList = new();
 
@@ -61,7 +63,20 @@ namespace Scripts.Managers
         {
             Debug.LogError("Rooms Updated");
 
-            m_RoomList = roomList;
+            foreach (RoomInfo room in roomList)
+            {
+                if (room.RemovedFromList)
+                {
+                    Debug.LogError("-" + room.Name);
+                    m_RoomList.Remove(room);
+                }
+                else
+                {
+                    Debug.LogError("+" + room.Name);
+                    m_RoomList.Add(room);
+                }
+            }
+            m_JoinByRoomListPanel.ResetUI(m_RoomList);
         }
 
         public override void OnCreateRoomFailed(short returnCode, string message)
@@ -72,12 +87,15 @@ namespace Scripts.Managers
             m_CreateRoomPanel.ResetCreateRoomButton();
         }
 
-        public void CreateRoom(string roomName, RoomOptions roomOptions)
+        public bool CreateRoom(string roomName, RoomOptions roomOptions)
         {
+            if (m_RoomList.Exists(room => room.Name == roomName)) return false;
+
             PhotonNetwork.CreateRoom(roomName, roomOptions, TypedLobby.Default);
+            return true;
         }
 
-        public bool JoinRoom(string roomName, string roomPassword)
+        public bool JoinRoom(string roomName, string roomPassword = "")
         {
             var room = m_RoomList.Find(room => room.Name == roomName);
 
@@ -88,9 +106,9 @@ namespace Scripts.Managers
                     Debug.LogError("Max player count reached");
                     return false;
                 }
-                else if (room.CustomProperties.ContainsKey("Password"))
+                else if (room.CustomProperties.ContainsKey(KeyHelper.PASSWORD_KEY))
                 {
-                    if ((string)room.CustomProperties["Password"] == roomPassword)
+                    if ((string)room.CustomProperties[KeyHelper.PASSWORD_KEY] == roomPassword)
                     {
                         PhotonNetwork.JoinRoom(roomName);
                         Debug.LogError("Success");
@@ -111,11 +129,6 @@ namespace Scripts.Managers
             }
             Debug.LogError("Room cant found");
             return false;
-        }
-
-        public List<RoomInfo> GetRoomList()
-        {
-            return m_RoomList;
         }
 
         private void SpawnPlayer()

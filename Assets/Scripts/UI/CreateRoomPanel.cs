@@ -5,6 +5,7 @@ using Scripts.Helpers;
 using Photon.Realtime;
 using Scripts.Managers;
 using ExitGames.Client.Photon;
+using System.Collections.Generic;
 
 namespace Scripts.UI
 {
@@ -34,6 +35,11 @@ namespace Scripts.UI
             if (string.IsNullOrEmpty(roomName)) return;
             if (maxPlayers <= 0) maxPlayers = m_DefaultMaxPlayers;
 
+            List<string> customPropertiesForLobby = new()
+            {
+                KeyHelper.ISVISIBLE_KEY
+            };
+
             var roomOptions = new RoomOptions()
             {
                 IsVisible = true,
@@ -43,18 +49,22 @@ namespace Scripts.UI
 
             var customProperties = new Hashtable
             {
-                { "IsVisible", isVisible }
+                { KeyHelper.ISVISIBLE_KEY, isVisible }
             };
 
             if (!string.IsNullOrEmpty(roomPassword))
             {
-                customProperties.Add("Password", roomPassword);
-                roomOptions.CustomRoomProperties = customProperties;
-                roomOptions.CustomRoomPropertiesForLobby = new string[2] { "IsVisible", "Password" };
+                customProperties.Add(KeyHelper.PASSWORD_KEY, roomPassword);
+                customPropertiesForLobby.Add(KeyHelper.PASSWORD_KEY);
             }
 
-            NetworkManager.Ins.CreateRoom(roomName, roomOptions);
-            m_CreateRoomButton.interactable = false;
+            roomOptions.CustomRoomProperties = customProperties;
+            roomOptions.CustomRoomPropertiesForLobby = customPropertiesForLobby.ToArray();
+
+            if (NetworkManager.Ins.CreateRoom(roomName, roomOptions))
+                m_CreateRoomButton.interactable = false;
+            else
+                m_CreateRoomButton.interactable = true;
         }
 
         public void ResetCreateRoomButton()
