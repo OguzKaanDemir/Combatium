@@ -1,11 +1,12 @@
+using Smooth;
+using Photon.Pun;
 using UnityEngine;
 using Scripts.Weapons;
-using Photon.Pun;
 
 namespace Scripts.Player
 {
     [RequireComponent(typeof(PlayerInput), typeof(PlayerController), typeof(Rigidbody2D))]
-    [RequireComponent(typeof(PhotonView), typeof(PhotonTransformView), typeof(PhotonRigidbody2DView))]
+    [RequireComponent(typeof(PhotonView), typeof(SmoothSyncPUN2))]
     public class PlayerBase : MonoBehaviour
     {
         [SerializeField] private Transform m_WeaponParent;
