@@ -7,7 +7,7 @@ namespace Scripts.Player
 {
     [RequireComponent(typeof(PlayerInput), typeof(PlayerController), typeof(Rigidbody2D))]
     [RequireComponent(typeof(PhotonView), typeof(SmoothSyncPUN2))]
-    public class PlayerBase : MonoBehaviour
+    public class PlayerBase : MonoBehaviourPun
     {
         [SerializeField] private Transform m_WeaponParent;
 
@@ -27,15 +27,20 @@ namespace Scripts.Player
         {
             if (m_CurrentWeapon) return false;
 
-            weapon.GetRigidbody2D().isKinematic = true;
-
-            weapon.transform.parent = m_WeaponParent;
-            weapon.transform.localPosition = Vector3.zero;
-            weapon.SetPlayerComponents(this, m_PlayerInput);
-
-            m_CurrentWeapon = weapon;
+            photonView.RPC(nameof(CollectWeaponRPC), RpcTarget.AllBuffered, weapon.photonView.ViewID);
 
             return true;
+        }
+
+        [PunRPC]
+        public virtual void CollectWeaponRPC(int viewID)
+        {
+            m_CurrentWeapon = PhotonView.Find(viewID).GetComponent<WeaponBase>();
+            m_CurrentWeapon.GetRigidbody2D().isKinematic = true;
+
+            m_CurrentWeapon.transform.parent = m_WeaponParent;
+            m_CurrentWeapon.transform.localPosition = Vector3.zero;
+            m_CurrentWeapon.SetPlayerComponents(this, m_PlayerInput);
         }
 
         public virtual void ThrowWeapon()

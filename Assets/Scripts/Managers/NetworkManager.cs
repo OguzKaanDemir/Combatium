@@ -23,6 +23,7 @@ namespace Scripts.Managers
         }
 
         [SerializeField] private GameObject m_PlayerPrefab;
+        [SerializeField] private GameObject m_MapPrefab;
         [SerializeField] private CreateRoomPanel m_CreateRoomPanel;
         [SerializeField] private JoinByRoomListPanel m_JoinByRoomListPanel;
 
@@ -54,9 +55,26 @@ namespace Scripts.Managers
             Debug.LogError("Joined Room");
             PanelManager.Ins.CloseAllPanels();
 
+            if (PhotonNetwork.IsMasterClient)
+            {
+                var map = PhotonNetwork.Instantiate(m_MapPrefab.name, Vector3.zero, Quaternion.identity);
+            }
+
             m_Map = FindObjectOfType<Map.Map>();
 
-            SpawnPlayer();
+            GameManager.Ins.onGameStart += () =>
+                {
+                    m_Map = FindObjectOfType<Map.Map>();
+                };
+            GameManager.Ins.onGameStart += SpawnPlayer;
+        }
+
+        public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+        {
+            if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers)
+            {
+                GameManager.Ins.StartGame();
+            }
         }
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)

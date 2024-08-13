@@ -1,17 +1,18 @@
+using Photon.Pun;
 using UnityEngine;
+using Scripts.Enums;
 using Scripts.Player;
 using Scripts.Bullets;
 using Scripts.Interfaces;
 using System.Collections;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
-using Scripts.Enums;
 
 namespace Scripts.Weapons
 {
-    [RequireComponent(typeof(MouseRotationer))]
+    [RequireComponent(typeof(MouseRotationer), typeof(PhotonView), typeof(PhotonTransformView))]
     [RequireComponent(typeof(CapsuleCollider2D), typeof(BoxCollider2D), typeof(Rigidbody2D))]
-    public class WeaponBase : MonoBehaviour, ICollectable
+    public class WeaponBase : MonoBehaviourPun, ICollectable
     {
         [field: SerializeField] public bool IsCollectable { get; set; }
 
@@ -44,9 +45,12 @@ namespace Scripts.Weapons
         [HideInInspector] public PlayerInput playerInput;
         [HideInInspector] public MouseRotationer mouseRotationer;
 
+        private CapsuleCollider2D m_Collider;
+
         public virtual void Start()
         {
             IsCollectable = true;
+            m_Collider = GetComponent<CapsuleCollider2D>();
             mouseRotationer = GetComponent<MouseRotationer>();
         }
 
@@ -55,11 +59,11 @@ namespace Scripts.Weapons
             if (!IsCollectable && playerInput)
             {
                 if (playerInput.ShootKey)
-                    Shoot();
+                    photonView.RPC(nameof(Shoot), RpcTarget.AllBuffered);
                 else if (playerInput.ReloadKey)
-                    Reload();
+                    photonView.RPC(nameof(Reload), RpcTarget.AllBuffered);
                 else if (playerInput.ThrowKey)
-                    Throw();
+                    photonView.RPC(nameof(Throw), RpcTarget.AllBuffered);
             }
         }
 
@@ -69,12 +73,16 @@ namespace Scripts.Weapons
             {
                 if (player.CollectWeapon(this))
                 {
-                    Collect();
+                    photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
+                    photonView.RPC(nameof(Collect), RpcTarget.AllBuffered);
+                    mouseRotationer.enabled = true;
                 }
             }
         }
 
         #region Shoot
+
+        [PunRPC]
         public virtual void Shoot()
         {
             if (!(!canShoot || currentBulletCount <= 0))
@@ -109,6 +117,8 @@ namespace Scripts.Weapons
 
         public virtual void ShootActions(Transform directionTranfsorm, Transform spawnPointTransform)
         {
+            if (player.photonView.Owner != PhotonNetwork.LocalPlayer) return;
+
             var properties = SetBulletProperties(directionTranfsorm, spawnPointTransform);
 
             var bullet = SpawnBullet(properties.spawnPosition, properties.spawnRotation);
@@ -127,7 +137,7 @@ namespace Scripts.Weapons
 
         public virtual BulletBase SpawnBullet(Vector3 spawnPosition, Quaternion spawnRotation)
         {
-            return Instantiate(bulletPrefab, spawnPosition, spawnRotation);
+            return PhotonNetwork.Instantiate(bulletPrefab.name, spawnPosition, spawnRotation).GetComponent<BulletBase>();
         }
 
         public virtual void FireBullet(BulletBase bullet, Vector3 direction)
@@ -139,6 +149,8 @@ namespace Scripts.Weapons
         #endregion
 
         #region Reload
+
+        [PunRPC]
         public virtual void Reload()
         {
             if (!isReloading && currentBulletCount != maxBulletCount && spareBulletsCount > 0)
@@ -170,6 +182,7 @@ namespace Scripts.Weapons
         #endregion
 
         #region Throw
+        [PunRPC]
         public virtual void Throw()
         {
             if (!isReloading)
@@ -184,12 +197,14 @@ namespace Scripts.Weapons
             canShoot = false;
             IsCollectable = false;
 
-            rigidbody2D.AddForce(CalculateThrowPosition(), ForceMode2D.Impulse);
+            if (photonView.Owner == PhotonNetwork.LocalPlayer)
+                rigidbody2D.AddForce(CalculateThrowPosition(), ForceMode2D.Impulse);
 
             player.ThrowWeapon();
             player = null;
             playerInput = null;
             mouseRotationer.enabled = false;
+            m_Collider.enabled = true;
 
             yield return new WaitForSeconds(1);
 
@@ -205,11 +220,12 @@ namespace Scripts.Weapons
         }
         #endregion
 
+        [PunRPC]
         public virtual void Collect()
         {
             IsCollectable = false;
             canShoot = true;
-            mouseRotationer.enabled = true;
+            m_Collider.enabled = false;
         }
 
         public void SetPlayerComponents(PlayerBase player, PlayerInput input)

@@ -1,32 +1,38 @@
 using UnityEngine;
 using Scripts.Player;
+using Photon.Pun;
+using Smooth;
+using System.Collections;
 
 namespace Scripts.Bullets
 {
     [RequireComponent(typeof(BoxCollider2D), typeof(Rigidbody2D))]
-    public class BulletBase : MonoBehaviour
+    [RequireComponent(typeof(PhotonView), typeof(SmoothSyncPUN2))]
+    public class BulletBase : MonoBehaviourPun
     {
         public int damage;
         public float bulletSpeed;
         public float lifeTime;
         public new Rigidbody2D rigidbody2D;
 
-        public virtual void Start()
+        public virtual IEnumerator Start()
         {
-            DestroyBulletByTime(lifeTime);
+            yield return new WaitForSeconds(lifeTime);
+            DestroyBullet();
         }
 
         public virtual void OnTriggerEnter2D(Collider2D collision)
         {
+            
             if (collision.TryGetComponent<PlayerCollider>(out var player))
             {
-                if (player.isLocalPlayer) return;
-                Destroy(gameObject);
+                if (photonView.Owner == player.player.photonView.Owner) return;
+                DestroyBullet();
             }
-            else if (!collision.GetComponent<BulletBase>())
+            else if (!collision.GetComponent<BulletBase>() && !collision.GetComponent<PlayerCollider>())
             {
                 print(collision.name);
-                Destroy(gameObject);
+                DestroyBullet();
             }
         }
 
@@ -37,9 +43,9 @@ namespace Scripts.Bullets
             rigidbody2D.AddForce(fireDirection + recoil, ForceMode2D.Impulse);
         }
 
-        public void DestroyBulletByTime(float time)
+        public void DestroyBullet()
         {
-            Destroy(gameObject, time);
+            Destroy(gameObject);
         }
     }
 }
