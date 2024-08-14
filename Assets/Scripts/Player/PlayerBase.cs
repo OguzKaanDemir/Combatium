@@ -21,6 +21,12 @@ namespace Scripts.Player
         {
             GetComponents();
             SetComponents();
+
+            //Temp code
+
+            GetComponentInChildren<SpriteRenderer>().color = Color.cyan;
+
+            //
         }
 
         public virtual bool CollectWeapon(WeaponBase weapon)

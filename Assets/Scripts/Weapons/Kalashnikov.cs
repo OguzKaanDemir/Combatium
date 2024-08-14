@@ -13,5 +13,10 @@ namespace Scripts.Weapons
         {
             base.OnTriggerEnter2D(collider);
         }
+
+        public override void SetIsCollectable(bool isCollectable)
+        {
+            base.SetIsCollectable(isCollectable);
+        }
     }
 }

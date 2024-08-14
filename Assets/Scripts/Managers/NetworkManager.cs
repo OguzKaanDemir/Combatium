@@ -156,7 +156,8 @@ namespace Scripts.Managers
 
         private IEnumerator SpawnPlayerCrt()
         {
-            yield return new WaitForSeconds(.5f);
+            var delay = 0.5f + (0.15f * PhotonNetwork.CurrentRoom.PlayerCount - 1);
+            yield return new WaitForSeconds(delay);
             var player = PhotonNetwork.Instantiate(m_PlayerPrefab.name, m_Map.GetPlayerSpawnPosition().position, Quaternion.identity);
             player.GetComponent<PlayerSetter>().enabled = true;
         }

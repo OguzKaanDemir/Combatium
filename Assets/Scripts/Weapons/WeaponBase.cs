@@ -47,17 +47,22 @@ namespace Scripts.Weapons
 
         private CapsuleCollider2D m_Collider;
 
-        public virtual void Start()
+        public virtual IEnumerator Start()
         {
-            IsCollectable = true;
             m_Collider = GetComponent<CapsuleCollider2D>();
             mouseRotationer = GetComponent<MouseRotationer>();
+
+            yield return new WaitForSeconds(0.5f);
+
+            SetIsCollectable(true);
         }
 
         public virtual void Update()
         {
             if (!IsCollectable && playerInput)
             {
+                transform.localPosition = Vector3.zero;
+
                 if (playerInput.ShootKey)
                     photonView.RPC(nameof(Shoot), RpcTarget.AllBuffered);
                 else if (playerInput.ReloadKey)
@@ -195,7 +200,7 @@ namespace Scripts.Weapons
             rigidbody2D.isKinematic = false;
 
             canShoot = false;
-            IsCollectable = false;
+            SetIsCollectable(false);
 
             if (photonView.Owner == PhotonNetwork.LocalPlayer)
                 rigidbody2D.AddForce(CalculateThrowPosition(), ForceMode2D.Impulse);
@@ -206,9 +211,9 @@ namespace Scripts.Weapons
             mouseRotationer.enabled = false;
             m_Collider.enabled = true;
 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(2);
 
-            IsCollectable = true;
+            SetIsCollectable(true);
         }
 
         public Vector3 CalculateThrowPosition()
@@ -237,6 +242,17 @@ namespace Scripts.Weapons
         public Rigidbody2D GetRigidbody2D()
         {
             return GetComponent<Rigidbody2D>();
+        }
+
+        public virtual void SetIsCollectable(bool isCollectable)
+        {
+            photonView.RPC(nameof(SetIsCollectableRPC), RpcTarget.AllBuffered, isCollectable);
+        }
+
+        [PunRPC]
+        public virtual void SetIsCollectableRPC(bool isCollectable)
+        {
+            IsCollectable = isCollectable;
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Scripts.Map
         [SerializeField] private bool m_IsSpecifiedWeaponsMap;
         [SerializeField, ShowIf(nameof(m_IsSpecifiedWeaponsMap))] private List<WeaponType> m_WeaponTypes;
         [SerializeField] private Vector2 m_SpawnDuration;
+        [SerializeField] private int m_StartWeaponCount;
 
 
         private void Start()
@@ -30,6 +31,10 @@ namespace Scripts.Map
             GameManager.Ins.onGameStart += () =>
                 {
                     var rTime = Random.Range(m_SpawnDuration.x, m_SpawnDuration.y);
+
+                    for (int i = 0; i < m_StartWeaponCount; i++)
+                        SpawnWeapon();
+
                     InvokeRepeating(nameof(SpawnWeapon), 3, rTime);
                 };
         }

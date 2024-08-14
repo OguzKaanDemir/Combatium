@@ -756,7 +756,8 @@ MonoBehaviour:
   m_Map: {fileID: 8147050467493186021}
   m_IsSpecifiedWeaponsMap: 0
   m_WeaponTypes: 
-  m_SpawnDuration: {x: 5, y: 20}
+  m_SpawnDuration: {x: 30, y: 100}
+  m_StartWeaponCount: 4
 --- !u!1 &5111033306462357033
 GameObject:
   m_ObjectHideFlags: 0

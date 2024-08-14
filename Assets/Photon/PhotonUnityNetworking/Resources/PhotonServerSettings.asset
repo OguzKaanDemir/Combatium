@@ -50,6 +50,8 @@ MonoBehaviour:
   - CollectWeaponRPC
   - Reload
   - Shoot
+  - Test
+  - SetIsCollectableRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
